@@ -11,7 +11,7 @@ import {
   UseGuards,
   Query,
 } from '@nestjs/common';
-import { UsersService } from './app.service';
+import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {
@@ -22,7 +22,7 @@ import {
 } from '@nestjs/swagger';
 import { UserEntity } from './entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { ParseStringPipe } from 'helpers/stringPipe';
+import { ParseStringPipe } from '../../helpers/stringPipe';
 
 @Controller('users')
 @ApiTags('users')
@@ -44,20 +44,20 @@ export class UsersController {
     return users.map((user) => new UserEntity(user));
   }
 
+  @Get('search')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: UserEntity })
+  async search(@Query('email', ParseStringPipe) email: string) {
+    return new UserEntity(await this.usersService.findByLogin(email));
+  }
+
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity })
   async findOne(@Param('id', ParseIntPipe) id: number) {
     return new UserEntity(await this.usersService.findOne(id));
-  }
-
-  @Get('search') // ОНО НЕ РАБОТАЕТ
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiOkResponse({ type: UserEntity })
-  async search(@Query('email', ParseStringPipe) email: string) {
-    return new UserEntity(await this.usersService.findByLogin(email))
   }
 
   @Patch(':id')

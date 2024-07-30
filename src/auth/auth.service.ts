@@ -5,14 +5,17 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from './../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import { AuthEntity } from './entity/auth.entity';
+import { AuthInterface } from '../../interfaces/auth.interface';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService, private jwtService: JwtService) {}
+  constructor(
+      private readonly prisma: PrismaService,
+      private readonly jwtService: JwtService
+  ) {}
 
-  async login(email: string, password: string): Promise<AuthEntity> {
+  async login(email: string, password: string): Promise<AuthInterface> {
     // Step 1: Fetch a user with the given email
     const user = await this.prisma.user.findUnique({ where: { email: email } });
 
