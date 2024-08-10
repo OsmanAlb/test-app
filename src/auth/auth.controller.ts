@@ -8,9 +8,8 @@ import { LoginDto } from './dto/login.dto';
 @ApiTags('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-  // @ts-ignore
+
   @Post('login')
-  // @ts-ignore
   @ApiOkResponse({ type: AuthInterface })
   login(@Body() { email, password }: LoginDto) {
     return this.authService.login(email, password);

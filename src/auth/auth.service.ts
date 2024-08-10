@@ -3,7 +3,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { PrismaService } from './../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { AuthInterface } from '../../interfaces/auth.interface';
 import * as bcrypt from 'bcrypt';
@@ -11,8 +11,8 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class AuthService {
   constructor(
-      private readonly prisma: PrismaService,
-      private readonly jwtService: JwtService
+    private readonly prisma: PrismaService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async login(email: string, password: string): Promise<AuthInterface> {

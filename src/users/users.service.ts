@@ -13,11 +13,15 @@ export class UsersService {
   async create(createUserDto: CreateUserDto) {
     const existingUser = await this.prisma.user.findUnique({
       where: { email: createUserDto.email },
-    })
+    });
 
-    if (existingUser) throw new ConflictException('User with this email already exists');
+    if (existingUser)
+      throw new ConflictException('User with this email already exists');
     // Hashing password
-    const hashedPassword = await bcrypt.hash(createUserDto.password, roundsOfHashing);
+    const hashedPassword = await bcrypt.hash(
+      createUserDto.password,
+      roundsOfHashing,
+    );
     createUserDto.password = hashedPassword;
 
     return this.prisma.user.create({
@@ -27,7 +31,7 @@ export class UsersService {
 
   findAll() {
     return this.prisma.user.findMany({
-      where: { deletedAt: null}
+      where: { deletedAt: null },
     });
   }
 

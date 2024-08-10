@@ -8,6 +8,6 @@ import { CommonModule } from 'helpers/common.module';
   controllers: [UsersController],
   providers: [UsersService],
   imports: [PrismaModule, CommonModule],
-  exports: [UsersService]
+  exports: [UsersService],
 })
 export class UsersModule {}

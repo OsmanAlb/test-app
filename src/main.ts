@@ -1,6 +1,6 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
@@ -11,7 +11,9 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Some project')
-    .setDescription('API documentation for the Some application. <br><br><a href="/swagger-json" target="_blank">Download JSON</a>')
+    .setDescription(
+      'API documentation for some application. <br><br><a href="/swagger-json" target="_blank">Download JSON</a>',
+    )
     .setVersion('0.1')
     .addBearerAuth()
     .build();
@@ -26,4 +28,5 @@ async function bootstrap() {
 
   await app.listen(3000);
 }
+
 bootstrap();
