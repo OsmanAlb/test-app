@@ -25,12 +25,13 @@ export class ImageUploadService {
     };
   }
 
-  async saveImage(image: BufferedFile) {
+  async saveImage(image: BufferedFile, userId: number) {
     const uploaded_image = await this.minioClientService.upload(image);
 
     const saved_image = await this.prisma.image.create({
       data: {
         imageUrl: uploaded_image.url,
+        userId: userId,
       },
     });
     return {
