@@ -39,4 +39,11 @@ export class ImageUploadService {
       message: 'Image upload successful',
     };
   }
+
+  async removeImage(id: number) {
+    return this.prisma.image.update({
+      where: { id },
+      data: { deletedAt: new Date() },
+    });
+  }
 }
