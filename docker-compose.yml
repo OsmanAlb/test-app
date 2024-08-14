@@ -1,5 +1,12 @@
 version: '3.8'
 services:
+  redis:
+    container_name: nestjs-caching
+    image: redis
+    ports:
+      - 6380:6379
+    volumes:
+      - redis:/data
   minio:
     image: minio/minio
     command: server --console-address ":9001" /data
@@ -26,3 +33,5 @@ services:
 volumes:
   postgres_data:
   minio_storage:
+  redis:
+    driver: local

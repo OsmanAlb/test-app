@@ -14,7 +14,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ImageUploadService } from './image-upload.service';
 import { BufferedFile } from '../minio-client/file.module';
-import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../../../guards/jwt-auth.guard';
 import { ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger';
 import { UserEntity } from '../../users/entities/user.entity';
 

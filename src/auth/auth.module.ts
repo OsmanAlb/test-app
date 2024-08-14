@@ -15,13 +15,9 @@ import { JwtStrategy } from './jwt.strategy';
       secret: process.env.JWT_SECRET || 'secretKey',
       signOptions: { expiresIn: '60m' },
     }),
-    UsersModule
+    UsersModule,
   ],
   providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}
-
-/* "email": "test@let.com",
- "password": "88888888888"
-*/
