@@ -1,4 +1,10 @@
-import { IsEmail, IsInt, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsInt,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 
 export class AuthDto {
   @IsEmail()

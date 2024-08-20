@@ -6,50 +6,45 @@ import * as bcrypt from 'bcrypt';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { User } from '@prisma/client';
+import { UserEntity } from './entities/user.entity';
+import Decimal from 'decimal.js';
 
 export const roundsOfHashing = 10;
 
 @Injectable()
-export class UsersService {
+export class UserService {
   constructor(
     private readonly prisma: PrismaService,
     @Inject(CACHE_MANAGER) private readonly cacheService: Cache,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
     const existingUser = await this.prisma.user.findUnique({
       where: { email: createUserDto.email },
     });
 
-    if (existingUser)
+    if (existingUser) {
       throw new ConflictException('User with this email already exists');
-    // Hashing password
-    const hashedPassword = await bcrypt.hash(
-      createUserDto.password,
-      roundsOfHashing,
-    );
+    }
+
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     createUserDto.password = hashedPassword;
 
-    return this.prisma.user.create({
-      data: createUserDto,
+    const balance = new Decimal(createUserDto.balance);
+
+    const newUser = new UserEntity({
+      ...createUserDto,
+      balance,
     });
+
+    const createdUser = await this.prisma.user.create({
+      data: newUser,
+    });
+
+    return new UserEntity(createdUser);
   }
 
-  // findAll() {
-  //   return this.prisma.user.findMany({
-  //     where: { deletedAt: null },
-  //   });
-  // }
-
-  // findOne(id: number) {
-  //   return this.prisma.user.findUnique({ where: { id, deletedAt: null } });
-  // }
-
-  // async findByLogin(email: string) {
-  //   return this.prisma.user.findUnique({ where: { email } });
-  // }
-
-  async findAll(): Promise<User[]> {
+  async findAll(): Promise<User[] | null> {
     const cachedData = await this.cacheService.get<User[]>('users');
 
     if (cachedData) {
@@ -60,7 +55,7 @@ export class UsersService {
       where: { deletedAt: null },
     });
 
-    await this.cacheService.set('users', users);
+    await this.cacheService.set('user', users);
     return users;
   }
 
@@ -77,7 +72,7 @@ export class UsersService {
       where: { id, deletedAt: null },
     });
 
-    if (user) await this.cacheService.set('users', user);
+    if (user) await this.cacheService.set('user', user);
 
     return user;
   }
@@ -91,7 +86,7 @@ export class UsersService {
       return cachedData;
     }
     const user = await this.prisma.user.findUnique({ where: { email } });
-    if (user) await this.cacheService.set('users', user);
+    if (user) await this.cacheService.set('user', user);
     return user;
   }
 
@@ -116,3 +111,15 @@ export class UsersService {
     });
   }
 }
+
+// findAll() {
+//   return this.prisma.user.findMany({
+//     where: { deletedAt: null },
+//   });
+// }
+// findOne(id: number) {
+//   return this.prisma.user.findUnique({ where: { id, deletedAt: null } });
+// }
+// async findByLogin(email: string) {
+//   return this.prisma.user.findUnique({ where: { email } });
+// }

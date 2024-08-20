@@ -1,13 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 import { Exclude } from 'class-transformer';
+import Decimal from 'decimal.js';
 
 export class UserEntity implements User {
-  constructor(partial: Partial<UserEntity>) {
-    Object.assign(this, partial);
-  }
   @ApiProperty()
   id: number;
+  @ApiProperty()
+  balance: Decimal;
   @ApiProperty()
   createdAt: Date;
   @ApiProperty()
@@ -24,4 +24,20 @@ export class UserEntity implements User {
   email: string;
   @Exclude()
   password: string;
+
+  constructor(partial: Partial<UserEntity>) {
+    Object.assign(this, partial);
+  }
+
+  toJSON() {
+    return {
+      ...this,
+      balance: this.balance.toString(), // Преобразование Decimal в строку
+    };
+  }
 }
+
+/** {
+ "email": "noctis@example.com",
+ "password": "nightfall",
+ } */

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "balance" SET DATA TYPE DECIMAL(20,2);

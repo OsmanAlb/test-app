@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from './prisma/prisma.module';
-import { UsersModule } from './users/users.module';
+import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { MinioClientModule } from './features/minio-client/minio-client.module';
 import { ImageUploadModule } from './features/image-upload/image-upload.module';
@@ -8,6 +8,8 @@ import { ConfigModule } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager';
 import * as redisStore from 'cache-manager-ioredis';
 import * as process from 'node:process';
+import { BalanceModule } from './features/balance-transfer/balance.module';
+import { ResetBalanceModule } from './balance-reset/balance-reset.module';
 
 @Module({
   imports: [
@@ -19,11 +21,13 @@ import * as process from 'node:process';
       ttl: 30, // cache lifetime
     }),
     PrismaModule,
-    UsersModule,
+    UserModule,
     AuthModule,
     MinioClientModule,
     ImageUploadModule,
+    BalanceModule,
     ConfigModule.forRoot(),
+    ResetBalanceModule,
   ],
 })
 export class AppModule {}

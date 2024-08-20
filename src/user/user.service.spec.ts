@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersService } from './users.service';
+import { UserService } from './user.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -9,7 +9,7 @@ jest.mock('../prisma/prisma.service');
 jest.mock('bcrypt');
 
 describe('UsersService', () => {
-  let service: UsersService;
+  let service: UserService;
   let prismaService: PrismaService;
   const roundsOfHashing = 10;
 
@@ -26,7 +26,7 @@ describe('UsersService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        UsersService,
+        UserService,
         {
           provide: PrismaService,
           useValue: mockPrismaService,
@@ -34,7 +34,7 @@ describe('UsersService', () => {
       ],
     }).compile();
 
-    service = module.get<UsersService>(UsersService);
+    service = module.get<UserService>(UserService);
     prismaService = module.get<PrismaService>(PrismaService);
   });
 
@@ -66,7 +66,7 @@ describe('UsersService', () => {
   });
 
   describe('findAll', () => {
-    it('should return an array of users', async () => {
+    it('should return an array of user', async () => {
       const users = [
         {
           id: 1,

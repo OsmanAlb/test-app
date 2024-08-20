@@ -20,6 +20,7 @@ model User {
   deletedAt DateTime?
   email     String    @unique
   images    Image[]
+  balance   Decimal   @db.Decimal(20, 2)
 
   age         Int
   name        String

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
+import { UserController } from './user.controller';
+import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from './entities/user.entity';
@@ -9,8 +9,8 @@ import { PrismaService } from '../prisma/prisma.service';
 import { APP_GUARD } from '@nestjs/core';
 
 describe('UsersController', () => {
-  let controller: UsersController;
-  let service: UsersService;
+  let controller: UserController;
+  let service: UserService;
 
   const mockUsersService = {
     create: jest.fn(),
@@ -23,16 +23,16 @@ describe('UsersController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [UsersController],
+      controllers: [UserController],
       providers: [
-        { provide: UsersService, useValue: mockUsersService },
+        { provide: UserService, useValue: mockUsersService },
         { provide: APP_GUARD, useClass: JwtAuthGuard },
         PrismaService,
       ],
     }).compile();
 
-    controller = module.get<UsersController>(UsersController);
-    service = module.get<UsersService>(UsersService);
+    controller = module.get<UserController>(UserController);
+    service = module.get<UserService>(UserService);
   });
 
   it('should be defined', () => {
@@ -59,7 +59,7 @@ describe('UsersController', () => {
   });
 
   describe('findAll', () => {
-    it('should return an array of users', async () => {
+    it('should return an array of user', async () => {
       const users = [
         { id: 1, email: 'test@example.com', password: 'hashedPassword' },
       ];

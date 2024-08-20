@@ -16,7 +16,7 @@ import { ImageUploadService } from './image-upload.service';
 import { BufferedFile } from '../minio-client/file.module';
 import { JwtAuthGuard } from '../../../guards/jwt-auth.guard';
 import { ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger';
-import { UserEntity } from '../../users/entities/user.entity';
+import { UserEntity } from '../../user/entities/user.entity';
 
 @Controller('image-upload')
 export class ImageUploadController {

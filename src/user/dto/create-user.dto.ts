@@ -1,5 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+  IsDecimal,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
+import Decimal from 'decimal.js';
+import { Transform } from 'class-transformer';
 
 export class CreateUserDto {
   @IsString()
@@ -22,6 +31,12 @@ export class CreateUserDto {
   @IsNotEmpty()
   @ApiProperty()
   age: number;
+
+  @IsDecimal()
+  @IsNotEmpty()
+  @ApiProperty()
+  @Transform(({ value }) => value.toString())
+  balance: Decimal;
 
   @IsString()
   @IsNotEmpty()

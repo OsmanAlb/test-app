@@ -1,4 +1,4 @@
-// src/users/users.controller.ts
+// src/user/user.controller.ts
 import {
   Body,
   Controller,
@@ -13,7 +13,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {
@@ -29,10 +29,11 @@ import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('users')
 @UseInterceptors(CacheInterceptor)
-@ApiTags('users')
-export class UsersController {
-  private readonly logger = new Logger(UsersController.name);
-  constructor(private readonly usersService: UsersService) {}
+@ApiTags('user')
+export class UserController {
+  private readonly logger = new Logger(UserController.name);
+
+  constructor(private readonly usersService: UserService) {}
 
   @Post()
   @ApiCreatedResponse({ type: UserEntity })
@@ -45,10 +46,12 @@ export class UsersController {
   @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity, isArray: true })
   async findAll() {
-    this.logger.log('Fetching users ...');
+    this.logger.log('Fetching user ...');
     const users = await this.usersService.findAll();
     this.logger.log(`Fetched ${users.length} users`);
-    return users.map((users) => new UserEntity(users));
+    if (Array.isArray(users) === true && users.length > 0) {
+      return users.map((users) => new UserEntity(users));
+    } else return null;
   }
 
   @Get('search')
