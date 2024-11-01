@@ -23,3 +23,6 @@ $ npm run test
 # e2e tests
 $ npm run test:e2e
 ```
+
+Project have swagger documentation. I should use this url after start the app: http://localhost:3000/api/
+
